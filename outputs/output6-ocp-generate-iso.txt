@@ -1,0 +1,39 @@
+[luis@registry sno1]$ aba iso
+[ABA] DNS server 192.168.1.1 is reachable
+[ABA] NTP server 2.rhel.pool.ntp.org is reachable
+[ABA] Checking IP conflicts using arping
+[ABA] No IP conflicts detected for 1 node(s)
+[ABA] Pre-flight validation passed
+==========================================
+Cluster configuration
+==========================================
+./openshift-install-mirror-registry.home.levmdomain.com 4.21.10
+built from commit 6285755d199e7aa7bf29db5fe6964ce7f3684ed9
+release image registry.home.levmdomain.com:8443/ocp4/openshift4/openshift/release-images@sha256:5d591a70c92a6dfa3b6b948ffe5e5eac7ab339c49005744006aa0dd9d6d98898
+release architecture amd64
+==========================================
+CLUSTER_NAME    | sno1
+BASE_DOMAIN     | ocp4.home.levmdomain.com
+RENDEZVOUSIP    | 192.168.1.245
+CP_REPLICAS     | 1
+CP_NAMES        | sno1
+PORTS_PER_NODE  | 1
+CP_MAC_ADDR1    | 52:54:00:ab:bb:ce
+CP_IP_ADDRESSES | 192.168.1.245
+WORKER_REPLICAS | 0
+ASSETS_DIR      | iso-agent-based
+==========================================
+[ABA] Generating the ISO boot image for cluster: sno1.ocp4.home.levmdomain.com ...
+[ABA] Running: ./openshift-install-mirror-registry.home.levmdomain.com agent create image --dir iso-agent-based 
+INFO Configuration has 1 master replicas, 0 arbiter replicas, and 0 worker replicas 
+WARNING The imageDigestSources configuration in install-config.yaml should have at least one source field matching the releaseImage value registry.home.levmdomain.com:8443/ocp4/openshift4/openshift/release-images@sha256:5d591a70c92a6dfa3b6b948ffe5e5eac7ab339c49005744006aa0dd9d6d98898 
+INFO The rendezvous host IP (node0 IP) is 192.168.1.245 
+INFO Extracting base ISO from release payload     
+INFO Base ISO obtained from release and cached at [/home/luis/.cache/agent/image_cache/coreos-x86_64.iso] 
+INFO Consuming Install Config from target directory 
+INFO Consuming Agent Config from target directory 
+INFO Generated ISO at iso-agent-based/agent.x86_64.iso. 
+[ABA] Making backup of 'iso-agent-based/auth' to 'iso-agent-based/auth.backup'
+[ABA] Adding NTP server to early bootstrap ignition: 2.rhel.pool.ntp.org
+
+[ABA] The agent based ISO has been created in the /home/luis/aba-1.0.0/sno1/iso-agent-based directory

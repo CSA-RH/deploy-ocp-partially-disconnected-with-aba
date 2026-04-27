@@ -1,0 +1,14 @@
+[luis@registry ~]$ cd ~/aba-1.0.0/
+[luis@registry aba-1.0.0]$ 
+[luis@registry aba-1.0.0]$ 
+[luis@registry aba-1.0.0]$ aba cluster --name sno1 --type sno --starting-ip 192.168.1.245
+[ABA] Extracting openshift-client-linux-amd64-rhel9-4.21.10.tar.gz to /home/luis/bin/oc
+[ABA] Extracting openshift-install-linux-4.21.10.tar.gz to /home/luis/bin/openshift-install
+[ABA] Copying butane binary to /home/luis/bin/butane
+[ABA] Extracting govc_Linux_x86_64.tar.gz to /home/luis/bin/govc
+[ABA] Initialized cluster directory /home/luis/aba-1.0.0/sno1 successfully
+[ABA] Creating 'sno1/cluster.conf' file for cluster type 'sno'.
+[ABA] Edit the cluster.conf file to set all the required parameters for OpenShift installation? (Y/n): Y
+
+[ABA] The cluster directory has been created: sno1
+[ABA] Install the cluster with: aba -d sno1 install  OR  cd sno1; aba install

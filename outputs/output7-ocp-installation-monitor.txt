@@ -1,0 +1,73 @@
+[luis@registry sno1]$ aba mon
+[sudo] password for luis: 
+[ABA] =================================================================================
+[ABA] Running: openshift-install agent wait-for install-complete --dir iso-agent-based 
+INFO Waiting for cluster install to initialize. Sleeping for 30 seconds 
+INFO Waiting for cluster install to initialize. Sleeping for 30 seconds 
+INFO Waiting for cluster install to initialize. Sleeping for 30 seconds 
+INFO Waiting for cluster install to initialize. Sleeping for 30 seconds 
+INFO Cluster is not ready for install. Check validations 
+WARNING Cluster validation: The cluster has hosts that are not ready to install. 
+WARNING Host sno1 validation: Host couldn't synchronize with any NTP server 
+WARNING Host sno1: updated status from discovering to insufficient (Host cannot be installed due to following failing validation(s): Host couldn't synchronize with any NTP server) 
+INFO Host sno1 validation: Host NTP is synced     
+INFO Host sno1: updated status from insufficient to known (Host is ready to be installed) 
+INFO Cluster is ready for install                 
+INFO Cluster validation: All hosts in the cluster are ready to install. 
+INFO Preparing cluster for installation           
+INFO Host sno1: updated status from known to preparing-for-installation (Host finished successfully to prepare for installation) 
+INFO Host sno1: New image status quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a4fdd7b41ba8085e89fbd29907d1c39be0ba7a89c6078e427ea3ff6f901c782f. result: success. time: 5.00 seconds; size: 280.59 Megabytes; download rate: 58.85 MBps 
+INFO Host sno1: updated status from preparing-for-installation to preparing-successful (Host finished successfully to prepare for installation) 
+INFO Cluster installation in progress             
+INFO Host sno1: updated status from preparing-successful to installing (Installation is in progress) 
+INFO Host: sno1, reached installation stage Installing: bootstrap 
+INFO Host: sno1, reached installation stage Waiting for bootkube 
+INFO Bootstrap Kube API Initialized               
+INFO Host: sno1, reached installation stage Writing image to disk 
+INFO Host: sno1, reached installation stage Writing image to disk: 7% 
+INFO Host: sno1, reached installation stage Writing image to disk: 14% 
+INFO Host: sno1, reached installation stage Writing image to disk: 21% 
+INFO Host: sno1, reached installation stage Writing image to disk: 29% 
+INFO Host: sno1, reached installation stage Writing image to disk: 37% 
+INFO Host: sno1, reached installation stage Writing image to disk: 43% 
+INFO Host: sno1, reached installation stage Writing image to disk: 48% 
+INFO Host: sno1, reached installation stage Writing image to disk: 54% 
+INFO Host: sno1, reached installation stage Writing image to disk: 62% 
+INFO Host: sno1, reached installation stage Writing image to disk: 69% 
+INFO Host: sno1, reached installation stage Writing image to disk: 77% 
+INFO Host: sno1, reached installation stage Writing image to disk: 84% 
+INFO Host: sno1, reached installation stage Writing image to disk: 92% 
+INFO Host: sno1, reached installation stage Writing image to disk: 98% 
+INFO Host: sno1, reached installation stage Writing image to disk: 100% 
+INFO Bootstrap configMap status is complete       
+INFO Bootstrap is complete                        
+INFO cluster bootstrap is complete                
+INFO Waiting up to 40m0s (until 7:09PM CEST) for the cluster at https://api.sno1.ocp4.home.levmdomain.com:6443 to initialize... 
+INFO Waiting up to 30m0s (until 7:29PM CEST) to ensure each cluster operator has finished progressing... 
+INFO All cluster operators have completed progressing 
+INFO Checking to see if there is a route at openshift-console/console... 
+INFO Install complete!                            
+INFO To access the cluster as the system:admin user when using 'oc', run 
+INFO     export KUBECONFIG=/home/luis/aba-1.0.0/sno1/iso-agent-based/auth/kubeconfig 
+INFO Access the OpenShift web-console here: https://console-openshift-console.apps.sno1.ocp4.home.levmdomain.com 
+INFO Login to the console with user: "kubeadmin", and password: "TwyFC-wTq4Z-PEaCn-WSkIW" 
+[ABA] The cluster has been successfully installed!
+[ABA] Run '. <(aba shell)' to access the cluster using the kubeconfig file (auth cert), or
+[ABA] Run '. <(aba login)' to log into the cluster using kubeadmin's password.
+[ABA] Run 'aba day2-ntp' to configure NTP on this cluster.
+[ABA] Run 'aba info' to view this information again.
+[ABA] Run 'aba help' and 'aba -h' for more options.
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║                                                                ║
+  ║  Congratulations!                                              ║
+  ║  You've installed your first OpenShift cluster using Aba!      ║
+  ║                                                                ║
+  ║  Please consider giving our project a star to let us know:     ║
+  ║  https://github.com/sjbylo/aba                                 ║
+  ║                                                                ║
+  ║  Thank you! :)                                                 ║
+  ║                                                                ║
+  ╚════════════════════════════════════════════════════════════════╝
+
+[luis@registry sno1]$ 

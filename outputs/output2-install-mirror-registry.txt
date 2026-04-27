@@ -1,0 +1,107 @@
+[luis@registry aba-1.0.0]$ aba -d mirror install
+[sudo] password for luis: 
+[ABA] Configure your private mirror registry (mirror/mirror.conf)? (Y/n): Y
+[ABA] Extracting mirror-registry-amd64.tar.gz into /home/luis/aba-1.0.0/mirror
+image-archive.tar
+execution-environment.tar
+mirror-registry
+sqlite3.tar
+[ABA] reg_vendor=auto resolved to 'quay' for architecture x86_64
+[ABA] Probing https://registry.home.levmdomain.com:8443/health/instance
+[ABA] Probing https://registry.home.levmdomain.com:8443/
+[ABA] Verifying FQDN 'registry.home.levmdomain.com' (IP: 192.168.1.152) reaches this localhost ...
+[ABA] SSH access to localhost via 'registry.home.levmdomain.com' is working.
+[ABA] Install Quay mirror registry on localhost (registry), accessible via registry.home.levmdomain.com:8443? (Y/n): Y
+[ABA] Installing Quay registry on localhost ...
+[ABA] Opening firewall port 8443 ...
+Warning: ALREADY_ENABLED: 8443:tcp
+success
+success
+[ABA] Installing mirror registry with command:
+[ABA] ./mirror-registry install -v --initUser init --quayHostname registry.home.levmdomain.com --quayRoot /home/luis/quay-install --quayStorage /home/luis/quay-install/quay-storage --sqliteStorage /home/luis/quay-install/sqlite-storage --initPassword <hidden>
+
+   __   __
+  /  \ /  \     ______   _    _     __   __   __
+ / /\ / /\ \   /  __  \ | |  | |   /  \  \ \ / /
+/ /  / /  \ \  | |  | | | |  | |  / /\ \  \   /
+\ \  \ \  / /  | |__| | | |__| | / ____ \  | |
+ \ \/ \ \/ /   \_  ___/  \____/ /_/    \_\ |_|
+  \__/ \__/      \ \__
+                  \___\ by Red Hat
+ Build, Store, and Distribute your Containers
+	
+INFO[2026-04-24 16:24:53] Install has begun                            
+DEBU[2026-04-24 16:24:53] Ansible Execution Environment Image: quay.io/quay/mirror-registry-ee:latest 
+DEBU[2026-04-24 16:24:53] Pause Image: registry.access.redhat.com/ubi8/pause:8.10-5 
+DEBU[2026-04-24 16:24:53] Quay Image: registry.redhat.io/quay/quay-rhel8:v3.12.14 
+DEBU[2026-04-24 16:24:53] Redis Image: registry.redhat.io/rhel8/redis-6:1-1766406130 
+INFO[2026-04-24 16:24:53] Found execution environment at /home/luis/aba-1.0.0/mirror/execution-environment.tar 
+INFO[2026-04-24 16:24:53] Loading execution environment from execution-environment.tar 
+DEBU[2026-04-24 16:24:53] Importing execution environment with command: /bin/bash -c /usr/bin/podman image import \
+				--change 'ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+				--change 'ENV HOME=/home/runner' \
+				--change 'ENV container=oci' \
+				--change 'ENTRYPOINT=["entrypoint"]' \
+				--change 'WORKDIR=/runner' \
+				--change 'EXPOSE=6379' \
+				--change 'VOLUME=/runner' \
+				--change 'CMD ["ansible-runner", "run", "/runner"]' \
+				- quay.io/quay/mirror-registry-ee:latest < /home/luis/aba-1.0.0/mirror/execution-environment.tar 
+Getting image source signatures
+Copying blob 159de7f3f142 done   | 
+Copying config 29a38a0125 done   | 
+Writing manifest to image destination
+sha256:29a38a01256e488f5e5088e799bb373381e39471b0e79b657c559f290e7347f3
+INFO[2026-04-24 16:25:15] Detected an installation to localhost        
+INFO[2026-04-24 16:25:15] Found SSH key at /home/luis/.ssh/quay_installer 
+INFO[2026-04-24 16:25:15] Attempting to set SELinux rules on /home/luis/.ssh/quay_installer 
+INFO[2026-04-24 16:25:15] Found image archive at /home/luis/aba-1.0.0/mirror/image-archive.tar 
+INFO[2026-04-24 16:25:15] Detected an installation to localhost        
+INFO[2026-04-24 16:25:15] Unpacking image archive from /home/luis/aba-1.0.0/mirror/image-archive.tar 
+quay.tar
+redis.tar
+pause.tar
+INFO[2026-04-24 16:25:19] Loading pause image archive from pause.tar   
+DEBU[2026-04-24 16:25:19] Importing Pause with command: ...
+Getting image source signatures
+Copying blob fa0aefe04e91 done   | 
+Copying config 5ebeb8cbaa done   | 
+Writing manifest to image destination
+sha256:5ebeb8cbaae284745c5e20b9abbc46154c0188ad58ccab65ef8c561401e1a96f
+INFO[2026-04-24 16:25:33] Loading redis image archive from redis.tar   
+DEBU[2026-04-24 16:25:33] Importing Redis with command: ...
+Getting image source signatures
+Copying blob 230487fee1b4 done   | 
+Copying config d0c8262b9d done   | 
+Writing manifest to image destination
+sha256:d0c8262b9d37e2e9d5467512c08c095b0b3193b489733ec432d8c80a690341e1
+INFO[2026-04-24 16:26:00] Loading Quay image archive from quay.tar     
+DEBU[2026-04-24 16:26:00] Importing Quay with command: ...
+Getting image source signatures
+Copying blob c226e8502927 done   | 
+Copying config aebee12279 done   | 
+Writing manifest to image destination
+sha256:aebee1227996e805df8d93b3f3426aebeb025e07ad0b8be4f196c98d652ef267
+INFO[2026-04-24 16:28:04] Attempting to set SELinux rules on image archive 
+INFO[2026-04-24 16:28:04] Running install playbook. This may take some time.
+INFO[2026-04-24 16:28:04] Detected an installation to localhost        
+
+PLAY [Install Mirror Appliance] **********************************************
+
+TASK [Gathering Facts] *******************************************************
+ok: [luis@registry.home.levmdomain.com]
+
+... (ansible playbook tasks) ...
+
+PLAY RECAP *******************************************************************
+luis@registry.home.levmdomain.com : ok=51   changed=32   unreachable=0    failed=0    skipped=13   rescued=0    ignored=0   
+
+INFO[2026-04-24 16:30:16] Quay installed successfully, config data is stored in /home/luis/quay-install 
+INFO[2026-04-24 16:30:16] Quay is available at https://registry.home.levmdomain.com:8443 with credentials (init, p4ssw0rd) 
+[sudo] password for luis: 
+[ABA] Cert '/home/luis/.aba/mirror/mirror/rootCA.pem' updated in system trust
+[ABA] Generating /home/luis/.aba/mirror/mirror/pull-secret-mirror.json
+[ABA] Saved registry state to /home/luis/.aba/mirror/mirror/state.sh
+
+[ABA] Registry installed/configured successfully!
+[luis@registry aba-1.0.0]$ 

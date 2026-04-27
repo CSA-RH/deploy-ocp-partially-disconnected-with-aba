@@ -1,0 +1,42 @@
+[luis@registry sno1]$ aba day2
+[ABA] Ensuring CLI binaries are installed
+[ABA] Accessing the cluster ...
+[ABA] What this 'day2' script does:
+[ABA] - Add the internal mirror registry's Root CA to the cluster trust store.
+[ABA] - Configure OperatorHub to integrate with the internal mirror registry.
+[ABA] - Apply any/all idms/itms resource files under aba/mirror/data/working-dir/cluster-resources that were created by oc-mirror (aba -d mirror sync or load).
+[ABA] - For fully disconnected environments, disable online public catalog sources.
+[ABA] - Install any CatalogSources found under working-dir/cluster-resources.
+[ABA] - Apply any release image signatures found under working-dir/cluster-resources.
+[ABA] - Apply any user-provided custom manifests from day2-custom-manifests/ directory.
+
+[ABA] Disabled default catalog sources (disconnected mode)
+[ABA] Adding mirror registry CA to cluster trust store
+[ABA] Adding the trust CA of the registry (registry.home.levmdomain.com) ...
+[ABA] Using root CA file at /home/luis/.aba/mirror/mirror/rootCA.pem
+configmap/registry-config created
+[ABA] Patching cluster trust CA     0s/3m
+[ABA] Waiting for imagestream API     1s/3m
+Error from server (ServiceUnavailable): the server is currently unable to handle the request (get imagestreams.image.openshift.io oauth-proxy)
+[ABA] 'Unknown authority' not found in imagestream/oauth-proxy -n openshift.  Assuming already fixed.
+[ABA] oc apply -f mirror/data/working-dir/cluster-resources/idms-oc-mirror.yaml
+imagedigestmirrorset.config.openshift.io/idms-release-0 created
+imagedigestmirrorset.config.openshift.io/idms-operator-0 created
+[ABA] oc apply -f mirror/data/working-dir/cluster-resources/itms-oc-mirror.yaml
+imagetagmirrorset.config.openshift.io/itms-release-0 created
+[ABA] Applying CatalogSource: redhat-operators
+catalogsource.operators.coreos.com/redhat-operators created
+[ABA] Patching CatalogSource display name for redhat-operators: redhat-operators (registry.home.levmdomain.com)
+catalogsource.operators.coreos.com/redhat-operators patched
+[ABA] Patching CatalogSource poll interval for redhat-operators to 2m
+catalogsource.operators.coreos.com/redhat-operators patched
+[ABA] Waiting for CatalogSource redhat-operators to become 'ready' ... 
+#########
+[ABA] CatalogSource redhat-operators is ready!
+[ABA] Showing status of all CatalogSource resources:
+NAMESPACE               NAME               DISPLAY                                           TYPE   PUBLISHER   AGE
+openshift-marketplace   redhat-operators   redhat-operators (registry.home.levmdomain.com)   grpc               49s
+[ABA] Applying signatures from: mirror/data/working-dir/cluster-resources/signature-configmap.json ...
+configmap/mirrored-release-signatures created
+[ABA] No custom manifests directory found at /home/luis/aba-1.0.0/sno1/day2-custom-manifests (this is optional)
+[luis@registry sno1]$ 

@@ -1,0 +1,43 @@
+[luis@registry aba-1.0.0]$ aba
+  __   ____   __  
+ / _\ (  _ \ / _\     Aba v1.0.0 - Install & manage air-gapped OpenShift quickly!
+/    \ ) _ (/    \    Follow the instructions below or see the README.md file for more.
+\_/\_/(____/\_/\_/    Get help: https://github.com/sjbylo/aba/discussions
+
+[ABA] Checking Internet connectivity to required sites...
+[ABA] Which OpenShift update channel do you want to use? (c)andidate, (f)ast or (s)table [s]: s
+[ABA] 'ocp_channel' set to 'stable' in aba.conf
+[ABA] Which version of OpenShift do you want to install?
+[ABA] Enter x.y.z or x.y version or 4.21.10 (l)atest or 4.20.18 (p)revious (<version>/l/p/Enter) [4.21.10]: l
+[ABA] 'ocp_version' set to '4.21.10' in aba.conf
+
+Aba uses an editor to aid in the workflow.
+Enter your preferred editor or set to 'none' if you prefer to edit manually! ('vi', 'emacs', 'nano' etc or 'none')? [vi]: 
+[ABA] Added value editor=vi to file aba.conf
+[ABA] Edit aba.conf to set global values, e.g. platform type, base domain & net addresses, dns & ntp etc (if known)? (Y/n): Y
+[ABA] Pull secret found at '/home/luis/.pull-secret.json'.
+[ABA] Validating pull secret authentication... ✓ Authentication successful
+
+Fully Disconnected (air-gapped)
+If you plan to install OpenShift in a fully disconnected (air-gapped) environment, Aba can download all required components—including
+the Quay mirror registry install file, container images, and CLI install files—and package them into an install bundle that you can
+transfer into your disconnected environment.
+[ABA] Install OpenShift into a fully disconnected network environment? (Y/n): n
+
+Partially Disconnected
+A mirror registry can be synchronized directly from the Internet, allowing OpenShift to be installed from the mirrored content.
+[ABA] Install OpenShift from a mirror registry that is synchonized directly from the Internet? (Y/n): Y
+
+Instructions for synchronizing images directly from the Internet to a mirror registry
+Set up the mirror registry and sync it with the necessary container images.
+To store container images, Aba can install the Quay mirror appliance or you can use an existing container registry.
+
+Run:
+  aba -d mirror install                # to configure an existing registry or install Quay.
+  aba -d mirror sync --retry <count>   # to synchronize all container images - from the Internet - into your registry.
+
+Or run:
+  aba -d mirror sync --retry <count>   # to complete both actions and ensure any image synchronization issues are retried.
+
+  aba mirror --help                    # See for help.
+After the images are stored in your mirror registry, proceed with the OpenShift installation.

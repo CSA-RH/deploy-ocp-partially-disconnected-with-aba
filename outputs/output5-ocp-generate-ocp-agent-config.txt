@@ -1,0 +1,44 @@
+```
+[luis@registry sno1]$ aba agentconf
+[sudo] password for luis: 
+[ABA] Configuration is for Single Node Openshift (SNO) ...
+[ABA] Master count: 1 is valid
+[ABA] Worker count: 0 is valid
+[ABA] DNS record for OpenShift api (api.sno1.ocp4.home.levmdomain.com) exists: 192.168.1.245
+[ABA] DNS record for apps ingress (*.apps.sno1.ocp4.home.levmdomain.com) exists: 192.168.1.245
+[ABA] Cluster configuration is valid
+
+[ABA] Showing existing values in cluster.conf:
+===================================================================================
+cluster_name=sno1                    | num_workers=0                   | port0=eth0
+base_domain=ocp4.home.levmdomain.com | dns_servers=192.168.1.1         | 
+machine_network=192.168.1.0          | next_hop_address=192.168.1.1    | 
+prefix_length=24                     | ntp_servers=2.rhel.pool.ntp.org | 
+starting_ip=192.168.1.245            | ports=ens160                    | 
+hostPrefix=23                        | vlan=                           | 
+master_prefix=master                 | ssh_key_file=~/.ssh/id_rsa      | 
+worker_prefix=worker                 | int_connection=                 | 
+num_masters=1                        | mirror_name=mirror              | 
+===================================================================================
+
+[ABA] Adjusting the default host prefix from 23 to 22 for bare-metal servers
+[ABA] Validating credentials of mirror registry ...
+[ABA] Using mirror registry pull secret file at /home/luis/.aba/mirror/mirror/pull-secret-mirror.json to access registry at: registry.home.levmdomain.com
+[ABA] Using root CA file at /home/luis/.aba/mirror/mirror/rootCA.pem
+[ABA] Using existing ssh key files: /home/luis/.ssh/id_rsa ...
+[ABA] Ensuring CLI binaries are installed
+[ABA] Extracting openshift-install from the release-image: registry.home.levmdomain.com:8443/ocp4/openshift4/openshift/release-images@sha256:5d591a70c92a6dfa3b6b948ffe5e5eac7ab339c49005744006aa0dd9d6d98898
+[ABA] Release image for version 4.21.10 is available at registry.home.levmdomain.com:8443/ocp4/openshift4/openshift/release-images@sha256:5d591a70c92a6dfa3b6b948ffe5e5eac7ab339c49005744006aa0dd9d6d98898
+[ABA] 
+[ABA] Generating Agent-based configuration file: /home/luis/aba-1.0.0/sno1/install-config.yaml
+[ABA] 
+[ABA] /home/luis/aba-1.0.0/sno1/install-config.yaml generated successfully!
+
+[ABA] 1 port(s): ens160
+[ABA] Adding DNS server(s): 192.168.1.1
+[ABA] Adding NTP server(s): 2.rhel.pool.ntp.org
+
+[ABA] Generating Agent-based configuration file: /home/luis/aba-1.0.0/sno1/agent-config.yaml
+
+[ABA] Using standard agent config template: templates/agent-config.yaml.j2 (ports=ens160)
+[ABA] /home/luis/aba-1.0.0/sno1/agent-config.yaml generated successfully!
