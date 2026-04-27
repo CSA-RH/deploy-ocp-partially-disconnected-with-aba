@@ -706,9 +706,6 @@ Open it and adjust the `minVersion` and `maxVersion` under `platform.channels`:
 vi mirror/data/imageset-config.yaml
 ```
 
-!!!!!!!!<continue here>
-Find the `channels` section and update it. For example, to upgrade from 4.21.10 to 4.21.??:
-
 ```yaml
   platform:
     channels:
