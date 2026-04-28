@@ -9,7 +9,8 @@ The platform images will be pulled directly from the public redhat registries to
 
 > **Note on platform choice:** > ABA supports `platform=kvm` which fully automates VM creation, boot, and lifecycle management. But here we use `platform=bm` (bare-metal) intentionally to simulate all the steps required to create a VM in KVM and start the installation of a SNO OpenShift cluster using a Agent Based Installer method.
 
-Disclaimer: This repository is provided as a learning resource and starting point, not a production-ready blueprint. The examples are intentionally simplified to illustrate core concepts and may not cover every requirement of your environment and adapt these guides to fit your specific needs.
+> **Disclaimer:**
+> The [aba](https://github.com/sjbylo/aba) tool is an open-source project (upstream only) and is **not supported by Red Hat**.
 
 ## Environment Summary
 
