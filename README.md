@@ -831,7 +831,7 @@ delete:
     channels:
       - name: stable-4.21
         minVersion: '4.21.3'
-        maxVersion: '4.21.8'
+        maxVersion: '4.21.3'
   operators:
     - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.21
       packages:
