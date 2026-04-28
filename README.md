@@ -9,9 +9,7 @@ The platform images will be pulled directly from the public redhat registries to
 
 > **Note on platform choice:** > ABA supports `platform=kvm` which fully automates VM creation, boot, and lifecycle management. But here we use `platform=bm` (bare-metal) intentionally to simulate all the steps required to create a VM in KVM and start the installation of a SNO OpenShift cluster using a Agent Based Installer method.
 
-~!!!!!!!!!!!!!!!!disclaimer
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Disclaimer: This repository is provided as a learning resource and starting point, not a production-ready blueprint. The examples are intentionally simplified to illustrate core concepts and may not cover every requirement of your environment and adapt these guides to fit your specific needs.
 
 ## Environment Summary
 
@@ -47,7 +45,7 @@ Configure them on your DNS server (e.g. dnsmasq, BIND, Pi-hole, router DNS).
 
 ---
 
-## Part 1 — RHEL 9.7 Bastion VM (KVM)
+## Part 1 : RHEL 9.7 Bastion VM (KVM)
 
 ### 1.1 Create the Bastion host, that will also contain the minimal Quay registry
 
@@ -139,7 +137,7 @@ sudo dnf install -y git make jq  firewalld jq tar net-tools bind-utils wget podm
 sudo shutdown -r 0
 ```
 
-### 1.5 Enable passwordless SSH to localhost
+### 1.4 Enable passwordless SSH to localhost
 
 ABA and the Quay mirror-registry installer require passwordless SSH from the bastion to itself.
 
@@ -167,7 +165,7 @@ exit
 sudo whoami
 ```
 
-### 1.6 Configure firewall
+### 1.5 Configure firewall
 
 Open the ports needed for the Quay mirror registry and HTTP:
 
@@ -180,7 +178,7 @@ sudo firewall-cmd --reload
 sudo firewall-cmd --list-all
 ```
 
-### 1.7 Download the pull secret
+### 1.6 Download the pull secret
 
 Download your Red Hat pull secret from [https://console.redhat.com/openshift/install/pull-secret](https://console.redhat.com/openshift/install/pull-secret)
 and save it:
@@ -192,7 +190,7 @@ vi ~/.pull-secret.json
 
 ---
 
-## Part 2 — Install and Configure ABA
+## Part 2 : Install and Configure ABA
 
 ### 2.1 Clone and install ABA
 
@@ -271,7 +269,7 @@ editor=vi			# Text editor to use, such as: nano, vi, emacs. Set to 'none' for ma
 ask=true			# Ask for confirmation before major actions (install, delete, etc.).
 
 #######################################################################################
-# ADVANCED SETTINGS — CHANGE ONLY IF REQUIRED
+# ADVANCED SETTINGS : CHANGE ONLY IF REQUIRED
 
 excl_platform=false		# Exclude platform images. Leave 'false' in most cases.
 
@@ -282,7 +280,7 @@ verify_conf=all			# Validate config files and run network checks (DNS, NTP, IP c
 
 ---
 
-## Part 3 — Mirror Registry Setup and Image Sync
+## Part 3 : Mirror Registry Setup and Image Sync
 
 This section breaks the mirror workflow into individual steps so you can understand
 and verify each one before proceeding. ABA's `aba -d mirror sync` can do all of this
@@ -327,7 +325,7 @@ What this command does:
    - Operator images for operators defined in `aba.conf` (`ops=` and `op_sets=`)
 3. Runs `oc-mirror` to pull images from Red Hat registries and push them directly into `registry.home.levmdomain.com:8443`
 
-The `--retry` flag is recommended because `oc-mirror` can fail on transient network issues — it will automatically retry the sync that many times.
+The `--retry` flag is recommended because `oc-mirror` can fail on transient network issues : it will automatically retry the sync that many times.
 
 ```bash
 aba -d mirror sync --retry 3
@@ -379,7 +377,7 @@ Login Succeeded!
 
 ---
 
-## Part 4 — Create and Install the OpenShift SNO Cluster
+## Part 4: Create and Install the OpenShift SNO Cluster
 
 
 ### 4.0. Force a refresh to download the correct binaries versions, e.g. fot install OpenShift version 4.21.3
@@ -435,7 +433,7 @@ data_disk=120
 ```
 
 > For SNO, `api_vip` and `ingress_vip` are ignored (both API and ingress use the node IP).
-> `int_connection=` is empty because only the bastion has Internet access — the cluster
+> `int_connection=` is empty because only the bastion has Internet access : the cluster
 > uses the local mirror exclusively.
 
 A new path with the name of the cluster `sno1` is created and contains the cluster parameters:
@@ -491,7 +489,7 @@ Since we are simulating bare-metal on KVM, create the VM manually:
 ```bash
 sudo virt-install \
   --name sno1 \
-  --ram 64000 \
+  --ram 32000 \
   --vcpus 8 \
   --disk path=/var/lib/libvirt/images/sno1.qcow2,size=120,format=qcow2 \
   --os-variant rhel9.7 \
@@ -513,7 +511,7 @@ output: [monitor openshift installation](outputs/output7-ocp-installation-monito
 
 ---
 
-## Part 5 — Day-2 Configuration (Post-Install)
+## Part 5: Day-2 Configuration (Post-Install)
 
 ### 5.1 Access the cluster - using KUBECONFIG
 
@@ -529,7 +527,7 @@ Wait until all cluster operators show `Available=True`.
 ### 5.2 Connect OperatorHub to the internal mirror (REQUIRED)
 
 The `install-config.yaml` already includes the mirror registry CA, pull secret, and
-`ImageDigestSources` for the OpenShift **platform release images** — that's how the
+`ImageDigestSources` for the OpenShift **platform release images** : that's how the
 cluster installs successfully from the mirror. However, the cluster still does not know
 about the mirrored **operator catalogs** or the broader image redirections for operator
 images. Without this step, OperatorHub will be empty.
@@ -537,11 +535,11 @@ images. Without this step, OperatorHub will be empty.
 The `aba day2` command applies the manifests generated by `oc-mirror` during the sync
 (stored in `mirror/data/working-dir/cluster-resources/`) to complete the configuration:
 
-- **IDMS** (ImageDigestMirrorSet) — extends image pull redirections to cover all mirrored content (operators, not just platform images)
-- **ITMS** (ImageTagMirrorSet) — same for tag-based references
-- **CatalogSources** — configures OperatorHub to use the mirrored `redhat-operator-index` catalog, making operators visible and installable
-- **Registry CA ConfigMap** — ensures the cluster-wide trust store includes the mirror registry's CA
-- **Release signature ConfigMap** — validates the authenticity of OCP release images
+- **IDMS** (ImageDigestMirrorSet) : extends image pull redirections to cover all mirrored content (operators, not just platform images)
+- **ITMS** (ImageTagMirrorSet) : same for tag-based references
+- **CatalogSources** : configures OperatorHub to use the mirrored `redhat-operator-index` catalog, making operators visible and installable
+- **Registry CA ConfigMap** : ensures the cluster-wide trust store includes the mirror registry's CA
+- **Release signature ConfigMap** : validates the authenticity of OCP release images
 
 > **CRITICAL:** You MUST re-run `aba day2` every time you run `aba -d mirror sync`
 > on a cluster that is already running.
@@ -559,8 +557,7 @@ Creates machineconfig containing NTP server configuration
 aba day2-ntp
 ```
 
-Creates MachineConfig objects via Butane to configure chrony (NTP) on the SNO node
-using the NTP servers defined in `aba.conf`. Verifies synchronisation via SSH.
+Creates MachineConfig objects via Butane to configure chrony (NTP) on the SNO node using the NTP servers defined in `aba.conf`. Verifies synchronisation via SSH.
 
 ### 5.4 Enable OpenShift Update Service
 
@@ -588,7 +585,7 @@ curl -k https://osus-route-openshift-update-service.apps.sno1.ocp4.home.levmdoma
 
 ---
 
-## Part 6 — Adding new operators after the initial OpenShift cluster install
+## Part 6 : Adding new operators after the initial OpenShift cluster install
 
 This section walks through a example of adding a new operator to your disconnected environment.
 
@@ -625,11 +622,6 @@ cluster-logging                 Red Hat OpenShift Logging               stable-6
 ```
 
 The value you need for `aba.conf` is the first column: `cluster-logging`.
-
-> **Tip:** ABA also provides pre-built operator sets in `templates/operator-set-*`.
-> For example, `templates/operator-set-ocp` includes common operations operators
-> (web-terminal, nmstate, descheduler, etc.). You can use these via `op_sets=ocp`
-> in `aba.conf` instead of listing individual operators.
 
 ### 6.2 Configure the operator in aba.conf
 
@@ -685,22 +677,15 @@ oc get packagemanifest | grep cluster-logging
 
 Before you can upgrade OpenShift in a disconnected environment, the following must be in place:
 
-1. **OpenShift Update Service (OSUS) must be enabled.** If you followed Part 5 and ran
-   `aba day2-osus`, this is already done. OSUS allows the cluster to discover available
-   upgrades via your internal mirror instead of reaching the Internet. This is only obligatory when the OpenShift cluster doesnt have internet access.
+1. **OpenShift Update Service (OSUS) must be enabled.** If you followed Part 5 and ran `aba day2-osus`, this is already done. OSUS allows the cluster to discover available upgrades via your internal mirror instead of reaching the Internet. This is only obligatory when the OpenShift cluster doesnt have internet access.
 
-2. **The `cincinnati-operator` must be mirrored.** This operator powers OSUS.
-   If you configured `ops=cincinnati-operator` in `aba.conf` (as in this guide), it is
-   already in your mirror.
+2. **The `cincinnati-operator` must be mirrored.** This operator powers OSUS. If you configured `ops=cincinnati-operator` in `aba.conf` (as in this guide), it is already in your mirror.
 
-3. **The target OpenShift version images must be in your mirror registry.** ABA does not
-   automatically mirror upgrade images — you must explicitly add the target version to
-   the imageset config and re-sync.
+3. **The target OpenShift version images must be in your mirror registry.** ABA does not automatically mirror upgrade images : you must explicitly add the target version to the imageset config and re-sync.
 
 ### 7.1 Edit the imageset config to include the target version
 
-The imageset config controls which OpenShift versions and operators are mirrored.
-Open it and adjust the `minVersion` and `maxVersion` under `platform.channels`:
+The imageset config controls which OpenShift versions and operators are mirrored. Open it and adjust the `minVersion` and `maxVersion` under `platform.channels`:
 
 ```bash
 vi mirror/data/imageset-config.yaml
@@ -719,10 +704,6 @@ vi mirror/data/imageset-config.yaml
 
 > **Important:** ABA does **not** manage the `minVersion`/`maxVersion` values automatically.
 > You must edit them manually before mirroring upgrade images.
-
-> **Note on EUS upgrades:** For Extended Update Support (EUS-to-EUS) upgrades
-> (e.g. 4.14 to 4.16), you must include intermediate versions in the channel range.
-> Consult the [Red Hat upgrade documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/updating_clusters/index) for your specific upgrade path.
 
 ### 7.2 Sync the new images to the mirror registry
 
@@ -744,20 +725,9 @@ cd ~/aba-1.0.0/sno1
 aba day2
 ```
 
-This refreshes the IDMS/ITMS, CatalogSources, and release signatures so the cluster
-can see the newly mirrored version.
+This refreshes the IDMS/ITMS, CatalogSources, and release signatures so the cluster can see the newly mirrored version.
 
-### 7.4 Trigger the upgrade
-
-After `day2` completes and OSUS has had time to update the graph (allow ~10 minutes),
-the new version should appear in the OpenShift web console:
-
-1. Open the OpenShift web console: `https://console-openshift-console.apps.sno1.ocp4.home.levmdomain.com`
-2. Navigate to **Administration → Cluster Settings**
-3. The available upgrade should appear in the **Update channel** section
-4. Click **Update** and select the target version
-
-### 7.5 Upgrading operators (already mirrored)
+### 7.4 Upgrading operators (already mirrored)
 
 Operator upgrades work differently from platform upgrades. When `oc-mirror` syncs, it mirrors the **full operator catalog index** for each operator you've configured. 
 That catalog contains metadata for **all available versions** of each operator. This means that when you re-sync, any new operator versions that Red Hat has published since your last sync are automatically pulled into your mirror.
@@ -783,25 +753,28 @@ aba day2
 ```bash
 # Check current operator version
 oc get csv -n openshift-operators
-
-# If the operator's install plan approval is set to "Automatic", the upgrade
-# happens automatically after day2 refreshes the catalog.
-# If set to "Manual", approve the pending install plan:
-oc get installplan -n openshift-operators
-oc patch installplan <plan-name> -n openshift-operators --type merge -p '{"spec":{"approved":true}}'
 ```
 
 > **Summary of the difference:**
 >
-> - **Platform (OpenShift) upgrade** -- edit `imageset-config.yaml` required, you choose the exact target version range
+> - **Platform image (OpenShift) upgrade** -- edit `imageset-config.yaml` required, you choose the exact target version range
 > - **Operator upgrade (already mirrored)** -- no edit needed, oc-mirror pulls all versions from the catalog automatically
 > - **Adding a new operator** -- edit `aba.conf` then re-sync, ABA regenerates the imageset config
 
+
+### 7.5 Trigger the OpenShift cluster upgrade
+
+After `day2` completes and OSUS has had time to update the graph (allow ~10 minutes), the new version should appear in the OpenShift web console:
+
+1. Open the OpenShift web console: `https://console-openshift-console.apps.sno1.ocp4.home.levmdomain.com`
+2. Navigate to **Administration → Cluster Settings**
+3. The available upgrade should appear in the **Update channel** section
+4. Click **Update** and select the target version
 ---
 
-## Part 8 — Pruning older images not in use from the mirror registry
+## Part 8: Pruning older images not in use from the mirror registry
 
-Over time the mirror registry accumulates images from previous OpenShift versions or operators you no longer need. ABA does not include a built-in prune command — image deletion is handled directly by `oc-mirror v2` using a dedicated two-stage delete workflow.
+Over time the mirror registry accumulates images from previous OpenShift versions or operators you no longer need. ABA does not include a built-in prune command. Image deletion is handled directly by `oc-mirror v2` using a dedicated two-stage delete workflow.
 
 In: https://access.redhat.com/solutions/7109213
 https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/disconnected_environments/about-installing-oc-mirror-v2#oc-mirror-workflows-delete-v2_about-installing-oc-mirror-v2
@@ -820,7 +793,7 @@ cd ~/aba-1.0.0/mirror/data
 vi delete-imageset-config.yaml
 ```
 
-Example — delete platform version 4.21.3 through 4.21.8 and the `cluster-logging`
+Example : delete platform version 4.21.3 through 4.21.8 and the `cluster-logging`
 operator:
 
 ```yaml
@@ -854,6 +827,8 @@ oc-mirror delete --v2 \
   docker://registry.home.levmdomain.com:8443/ocp4/openshift4
 ```
 
+The list of images that will be deleted, is created: `working-dir/delete/delete-images.yaml`
+
 Review the generated file at `working-dir/delete/delete-images.yaml` before proceeding.
 
 ### 8.3 Execute the deletion
@@ -873,27 +848,21 @@ Add `--force-cache-delete` if you also want to purge the local workspace cache
 
 - **Never delete images for a version that a running cluster is currently using.**
   If your cluster runs 4.21.10, do not delete 4.21.10 platform images.
-- **Quay garbage collection:** The delete command removes manifests from the registry.
-  Unreferenced blobs (layers) remain on disk until Quay's internal garbage collection
-  process cleans them up automatically.
 - **v1-mirrored images:** If your images were originally mirrored with `oc-mirror v1`,
   use the `--delete-v1-images` flag instead of the standard delete workflow.
 
 > **References:**
 > - [oc-mirror v2 delete functionality](https://github.com/openshift/oc-mirror/blob/main/docs/features/delete-functionality.md)
-> - [Red Hat OpenShift — oc-mirror v2 disconnected install](https://docs.openshift.com/container-platform/4.16/installing/disconnected_install/about-installing-oc-mirror-v2.html)
+> - [Red Hat OpenShift : oc-mirror v2 disconnected install](https://docs.openshift.com/container-platform/4.16/installing/disconnected_install/about-installing-oc-mirror-v2.html)
 > - [Red Hat KB: deleting v1-mirrored images with v2](https://access.redhat.com/solutions/7109213)
 
 ---
 
-## Part 10 — Deleting a cluster completely
+## Part 9: Deleting a cluster completely
 
-Since `platform=bm` (bare-metal) was used, ABA did not create the VM and cannot
-delete it automatically. The `aba delete` command only works for `platform=kvm` or
-`platform=vmw` where ABA manages the VM lifecycle. For bare-metal, each step must
-be done manually.
+Since `platform=bm` (bare-metal) was used, ABA did not create the VM and cannot delete it automatically. The `aba delete` command only works for `platform=kvm` or `platform=vmw` where ABA manages the VM lifecycle. For bare-metal, each step must be done manually.
 
-### 10.1 Clean up ABA cluster files
+### 9.1 Clean up ABA cluster files
 
 ```bash
 cd ~/aba-1.0.0/sno1
@@ -902,12 +871,9 @@ cd ..
 rm -rf sno1
 ```
 
-`aba clean` removes generated files (ISO, agent configs, marker files) but preserves
-`cluster.conf`. The `rm -rf` removes the entire cluster directory. There is no
-persistent per-cluster state in `~/.aba/` — that directory only holds mirror
-credentials and runner cache.
+`aba clean` removes generated files (ISO, agent configs, marker files) but preserves `cluster.conf`. The `rm -rf` removes the entire cluster directory. There is no persistent per-cluster state in `~/.aba/` : that directory only holds mirror credentials and runner cache.
 
-### 10.2 Destroy the KVM virtual machine
+### 9.2 Destroy the KVM virtual machine
 
 Since the VM was created manually with `virt-install`, it must be destroyed manually:
 
@@ -916,8 +882,7 @@ sudo virsh destroy sno1
 sudo virsh undefine sno1 --remove-all-storage --nvram
 ```
 
-`destroy` forces power-off. `undefine --remove-all-storage --nvram` removes the VM
-definition, its disk (`/var/lib/libvirt/images/sno1.qcow2`), and the UEFI NVRAM file.
+`destroy` forces power-off. `undefine --remove-all-storage --nvram` removes the VM definition, its disk (`/var/lib/libvirt/images/sno1.qcow2`), and the UEFI NVRAM file.
 
 Verify it is gone:
 
@@ -925,18 +890,10 @@ Verify it is gone:
 sudo virsh list --all | grep sno1
 ```
 
-### 10.5 Remove the ISO from the KVM host
+### 9.3 Remove the ISO from the KVM host
 
 The ISO was copied to the hypervisor during installation:
 
 ```bash
 rm /home/luis/Downloads/agent.x86_64.iso   # on the KVM host (192.168.1.102)
 ```
-
-### 10.6 (Optional) Prune mirror registry images
-
-The sno1 images (4.21.10) remain in the mirror registry. If no other cluster uses
-that version and you want to reclaim disk space, follow Part 8 (pruning). Otherwise
-leave them — they cause no harm and `oc-mirror` handles deduplication for shared
-layers.
-
