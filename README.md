@@ -3,7 +3,7 @@
 ## Introduction
 The objective of this repository is to do an exercise to showcase the ABA tool.  Here will do an exercise to install a Partially disconnected OpenShift cluster and deploy a local minimal Quay registry, using the mirror-registry tool.
 
-The OpenShift cluster doesnt have internet access while the bastion host has network access to internet and to the OpenShift cluster.
+The OpenShift cluster doesnt have internet access while the bastion/registry host has network access to internet and to the OpenShift cluster.
 
 The platform images will be pulled directly from the public redhat registries to the local Quay registry.
 
