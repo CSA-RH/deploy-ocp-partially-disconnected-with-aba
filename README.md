@@ -360,15 +360,7 @@ You can also inspect the imageset config that was generated:
 cat mirror/data/imageset-config.yaml
 ```
 
-### 3.5 (Optional) Pre-download CLI binaries
-
-If you plan to disconnect from the Internet before installing the cluster:
-
-```bash
-aba -d cli download
-```
-
-### 3.6. Minimal Quay access
+### 3.5. Minimal Quay access
 The minimal Quay can be accessed in https://registry.home.levmdomain.com:8443
 
 ```
